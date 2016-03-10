@@ -16,7 +16,7 @@ La partie serveur se charge de récupérer les requêtes et exécute l'une des a
 | DELETE         | Supprime la ville spécifiée                                    |
 
 
-**La proximitée des villes s'effectue de la manière suivante:**
+**Le calcul de la proximité des villes s'effectue de la manière suivante :**
 
 ```
 Pour chaque ville enregistrée
