@@ -113,11 +113,9 @@ public class MyClient {
         Map<String, Object> requestContext = dispatcher.getRequestContext();
 
 		requestContext.put(MessageContext.HTTP_REQUEST_METHOD, "DELETE");
-        requestContext.put(MessageContext.HTTP_REQUEST_HEADERS)
         requestContext.put(MessageContext.PATH_INFO, "/city");
 
         Source s = new JAXBSource(jc, city);
-        System.out.println(s);
 
         Source result = dispatcher.invoke(s);
         printSource(result);
@@ -187,18 +185,16 @@ public class MyClient {
 
         client.getCities();
 
-        client.deleteCity(new City("Londres",    51.504872,  -0.07857, "Angleterre"));
+        // client.deleteCity(new City("Londres",    51.504872,  -0.07857, "Angleterre"));
         // client.deleteCity(new City("Londres",    51.504872,  -0.07857, "Angleterre"));
 
         client.searchForCity(new Position(49.443889, 1.103333));
         client.searchForCity(new Position(49.083333,    -0.65));
         client.searchForCity(new Position(     43.2,   -80.38));
 
-        /*
         client.searchForCities(new Position(48.85, 2.34), 10);
         client.searchForCities(new Position(   42,   64), 10);
         client.searchForCities(new Position(49.45, 1.11), 10);
-        */
 
         client.getCities("Mogadiscio");
         client.getCities("Paris");

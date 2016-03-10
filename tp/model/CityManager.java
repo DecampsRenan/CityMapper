@@ -62,7 +62,39 @@ public class CityManager {
 		throw new CityNotFound("City Not Found");
 	}
 
-	/**
-	 * TODO: searchNear : une fonction qui retourne la liste des villes à dix klomètres d'une position
-	 */
+	public List<City> searchNear(Position position) throws CityNotFound {
+
+		List<City> lCity = new LinkedList<>();
+
+		for (City city : cities) {
+
+			int    earthPerimeter = 6371000;
+
+			double lat1 = Math.toRadians(position.getLatitude());
+			double lat2 = Math.toRadians(city.getPosition().getLatitude());
+
+			double lon1 = Math.toRadians(position.getLongitude());
+			double lon2 = Math.toRadians(city.getPosition().getLongitude());
+
+			double deltaLat = Math.toRadians(lat2 - lat1);
+			double deltaLon = Math.toRadians(lon2 - lon1);
+
+			double a = Math.sin(deltaLat/2) * Math.sin(deltaLat/2) +
+					Math.cos(lat1) * Math.cos(lat2) *
+							Math.sin(deltaLon/2) * Math.sin(deltaLon/2);
+
+			double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+			double d = earthPerimeter * c;
+			System.out.println("Distance : " + d);
+
+			if (d <= 10) {
+				lCity.add(city);
+			}
+
+		}
+
+		if (lCity.isEmpty()) throw new CityNotFound("No City Arround");
+
+		return lCity;
+	}
 }

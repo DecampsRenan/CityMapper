@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @WebServiceProvider
-                   
+
 @ServiceMode(value=Service.Mode.MESSAGE)
 public class MyServiceTP implements Provider<Source> {
 	
@@ -33,18 +33,18 @@ public class MyServiceTP implements Provider<Source> {
 	public MyServiceTP(){
 		try {
             jc = JAXBContext.newInstance(CityManager.class,City.class,Position.class);
-            
-        } catch(JAXBException je) {
+			System.out.println(jc);
+		} catch(JAXBException je) {
             System.out.println("Exception " + je);
             throw new WebServiceException("Cannot create JAXBContext", je);
         }
         cityManager.addCity(new City("Rouen",49.437994,1.132965,"FR"));
         cityManager.addCity(new City("Neuor",12,42,"RF"));
 	}
-	 
+
     public Source invoke(Source source) {
-        try{
-                    System.out.println(source);
+
+		try {
             MessageContext mc = wsContext.getMessageContext();
             String path = (String)mc.get(MessageContext.PATH_INFO);
             String method = (String)mc.get(MessageContext.HTTP_REQUEST_METHOD);
@@ -52,16 +52,16 @@ public class MyServiceTP implements Provider<Source> {
 		    if (method.equals("GET"))
 	                return get(mc, path);
 			if (method.equals("POST"))
-				    return post(source, mc);
+				    return post(source, mc, path);
            	if (method.equals("PUT"))
 					return put(source, mc);
            	if (method.equals("DELETE")) {
-                    System.out.println(source);
 					return delete(source, mc, path); }
 			throw new WebServiceException("Unsupported method:" +method);  
         } catch(JAXBException je) {
             throw new WebServiceException(je);
         }
+
     }
 
 	private Source put(Source source, MessageContext mc) throws JAXBException {
@@ -88,30 +88,37 @@ public class MyServiceTP implements Provider<Source> {
             // * effacer la ville passée en paramètre
             Unmarshaller u = jc.createUnmarshaller();
             City city = (City) u.unmarshal(source);
-            System.out.println("Suppression de [" + city.getName() + "]");
             cityManager.removeCity(city);
         }
 
         return new JAXBSource(jc, cityManager);
 	}
 
-	private Source post(Source source, MessageContext mc) throws JAXBException {
-		// * rechercher une ville à partir de sa position
+	private Source post(Source source, MessageContext mc, String path) throws JAXBException {
+
 		Unmarshaller u = jc.createUnmarshaller();
 		Position position=(Position)u.unmarshal(source);
-		Object message;
-		try {
-			message = cityManager.searchExactPosition(position);
-		} catch (CityNotFound cnf) {
-			// TODO: retourner correctement l'exception
-			message = cnf;
-		}
-		
-		return new JAXBSource(jc, message);
-		
-		// TODO à compléter 
-		// * rechercher les villes proches de cette position si l'url de post contient le mot clé "near"
 
+		Object message;
+
+		if (path != null && path.equals("near")) {
+
+			try {
+				message = cityManager.searchNear(position);
+			} catch (CityNotFound cityNotFound) {
+				message = cityNotFound.getMessage();
+			}
+
+		} else {
+
+			try {
+				message = cityManager.searchExactPosition(position);
+			} catch (CityNotFound cnf) {
+				message = cnf.getMessage();
+			}
+		}
+
+		return new JAXBSource(jc, message);
 	}
 
 	private Source get(MessageContext mc, String path) throws JAXBException {
