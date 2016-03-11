@@ -29,7 +29,11 @@ public class MyServiceTP implements Provider<Source> {
 	
 	@javax.annotation.Resource(type=Object.class)
 	protected WebServiceContext wsContext;
-	
+
+	/**
+	 * Constructeur chargé d'initialiser le parseur XML/Objet Java avec
+	 * Les classes CityManager, City, Position
+	 */
 	public MyServiceTP(){
 		try {
             jc = JAXBContext.newInstance(CityManager.class,City.class,Position.class);
@@ -42,6 +46,12 @@ public class MyServiceTP implements Provider<Source> {
         cityManager.addCity(new City("Neuor",12,42,"RF"));
 	}
 
+	/**
+	 * Méthode appellée à chaque requête; dispatche en fonction
+	 * de la méthode utilisée vers le traitement associé.
+	 * @param source
+	 * @return Réponse du serveur.
+     */
     public Source invoke(Source source) {
 
 		try {
@@ -64,6 +74,14 @@ public class MyServiceTP implements Provider<Source> {
 
     }
 
+	/**
+	 * Méthode chargée d'ajouter la ville passée en paramètre à la liste
+	 * de villes déjà connues.
+	 * @param source
+	 * @param mc Contenu de la requête (correspond aux variables -> ici une City)
+	 * @return Source réponse du serveur
+	 * @throws JAXBException
+     */
 	private Source put(Source source, MessageContext mc) throws JAXBException {
 
         Unmarshaller u = jc.createUnmarshaller();
@@ -74,6 +92,15 @@ public class MyServiceTP implements Provider<Source> {
 		return new JAXBSource(jc, city);
 	}
 
+	/**
+	 * Méthode chargée de supprimer toutes les villes (all) ou seulement
+	 * celle qui a été spéciifiée.
+	 * @param source
+	 * @param mc Contenu de la requête (correspond aux variables -> ici une City)
+	 * @param path Chemin utilisé pour la requête
+	 * @return Source réponse du serveur
+	 * @throws JAXBException
+     */
 	private Source delete(Source source, MessageContext mc, String path) throws JAXBException {
 
         if (path.equals("all")) {
@@ -94,6 +121,14 @@ public class MyServiceTP implements Provider<Source> {
         return new JAXBSource(jc, cityManager);
 	}
 
+	/**
+	 * Méthode chargée de retourner la/les villes situées sur/proche d'une Position.
+	 * @param source
+	 * @param mc Contenu de la requête (correspond aux variables -> ici une City)
+	 * @param path Chemin utilisé pour la requête
+	 * @return La ou les City trouvées.
+	 * @throws JAXBException si aucune ville n'esst retournée.
+     */
 	private Source post(Source source, MessageContext mc, String path) throws JAXBException {
 
 		Unmarshaller u = jc.createUnmarshaller();
@@ -101,10 +136,9 @@ public class MyServiceTP implements Provider<Source> {
 
 		Object message;
 
-		if (path != null && path.equals("near")) {
-
+		if (path != null) {
 			try {
-				message = cityManager.searchNear(position);
+				message = cityManager.searchNear(position, Integer.parseInt(path));
 			} catch (CityNotFound cityNotFound) {
 				message = cityNotFound.getMessage();
 			}
@@ -121,6 +155,14 @@ public class MyServiceTP implements Provider<Source> {
 		return new JAXBSource(jc, message);
 	}
 
+	/**
+	 * Méthode chargée de retourner toutes les City ou seulement celles dont
+	 * le nom a été passé en paramètre.
+	 * @param mc
+	 * @param path Chemin utilisé pour la requête
+	 * @return La/les villes trouvées
+	 * @throws JAXBException si aucune City n'est retournée.
+     */
 	private Source get(MessageContext mc, String path) throws JAXBException {
 
         Object message;
@@ -137,6 +179,10 @@ public class MyServiceTP implements Provider<Source> {
 		return new JAXBSource(jc, message);
 	}
 
+	/**
+	 *
+	 * @param args
+     */
 	public static void main(String args[]) {
 	      Endpoint e = Endpoint.create( HTTPBinding.HTTP_BINDING,
 	                                     new MyServiceTP());

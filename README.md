@@ -1,7 +1,7 @@
 # Projet Architecture Distribuée
 
 L'idée de ce projet est de mettre en place un système
-de communication entre un serveur REST et un client.
+de communication entre un serveur SOAP et un client.
 
 La partie serveur se charge de récupérer les requêtes et exécute l'une des actions suivantes:
 
@@ -26,3 +26,11 @@ Pour chaque ville enregistrée
     Fin Si
 Fin Pour
 ```
+
+**Déroulement d'une requête**
+
+1. On appelle la méthode côté client
+2. On transmet les objets si nécessaire
+3. Le serveur reçoit la requête et dispatche en fonction de la méthode vers la fonction associée
+4. Le serveur renvoie la réponse contenant les/la ville/s associée/s au client au format xml
+5. le client affiche les données.

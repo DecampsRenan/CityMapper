@@ -25,6 +25,10 @@ public class MyClient {
 	private static final QName qname = new QName("", "");
 	private static final String url = "http://127.0.0.1:8084";
 
+	/**
+	 *  Constructeur chargé d'initialiser le parseur XML/Objet Java avec
+	 * Les classes CityManager, City, Position
+	 */
 	public MyClient() {
 		try {
 			jc = JAXBContext.newInstance(CityManager.class, City.class,
@@ -34,7 +38,11 @@ public class MyClient {
 		}
 	}
 
-
+	/**
+	 * Méthode permettant de faire le lien avec le serveur et permettant d'exécuter
+	 * une requête de type GET retournant l'ensemble des City enregistrées.
+	 * @throws JAXBException
+     */
     public void getCities() throws JAXBException {
 
         service = Service.create(qname);
@@ -54,6 +62,12 @@ public class MyClient {
         printSource(result);
     }
 
+	/**
+	 * Méthode permettant de faire le lien avec le serveur et permettant d'exécuter
+	 * une requête de type GET retournant l'ensemble des City enregistrées qui ont le nom spécifié.
+	 * @param name Nom de la ville à rechercher
+	 * @throws JAXBException
+     */
     public void getCities(String name) throws JAXBException {
 
         service = Service.create(qname);
@@ -71,6 +85,11 @@ public class MyClient {
         printSource(result);
     }
 
+	/**
+	 * Méthode effectuant une requête de type DELETE permettant de supprimer l'ensemble
+	 * des City enregistrées.
+	 * @throws JAXBException
+     */
     public void removeCities() throws JAXBException {
 
         service = Service.create(qname);
@@ -86,6 +105,11 @@ public class MyClient {
         printSource(result);
     }
 
+	/**
+	 * Méthode effectuant une requête de type PUT permettant d'ajouter une City.
+	 * @param city City à ajouter.
+	 * @throws JAXBException
+     */
     public void addCity(City city) throws JAXBException {
 
         service = Service.create(qname);
@@ -102,6 +126,16 @@ public class MyClient {
         printSource(result);
     }
 
+	/**
+	 * Méthode effectuant une requête de type DELETE permettant de supprimer la City spécifiée.
+	 *
+	 * WARNING: Cette méthode ne fonctionne pas; il semble que l'objet Source n'est jamais
+	 *          reçu du côté du serveur. Une des solutions serait de passer tous les paramètres
+	 *          nécessaires à la suppression dans l'URL et les récupérer du côté du serveur.
+	 *
+	 * @param city City à supprimer
+	 * @throws JAXBException
+     */
     public void deleteCity(City city) throws JAXBException {
 
         service = Service.create(qname);
@@ -121,20 +155,33 @@ public class MyClient {
         printSource(result);
     }
 
+	/**
+	 * Méthode effectuant une requête de type POST permettant de retourner l'ensemble de
+	 * City autour d'une position donnée.
+	 * @param position Position autour de laquelle chercher
+	 * @param radius rayon de recherche
+	 * @throws JAXBException
+     */
     public void searchForCities(Position position, int radius) throws JAXBException {
-/*
+
         service = Service.create(qname);
 		service.addPort(qname, HTTPBinding.HTTP_BINDING, url);
 		Dispatch<Source> dispatcher = service.createDispatch(qname,
 				Source.class, Service.Mode.MESSAGE);
 		Map<String, Object> requestContext = dispatcher.getRequestContext();
 		requestContext.put(MessageContext.HTTP_REQUEST_METHOD, "POST");
+		requestContext.put(MessageContext.PATH_INFO, "/" + radius);
 		Source result = dispatcher.invoke(new JAXBSource(jc, position));
 
         printSource(result);
-        */
     }
 
+	/**
+	 * Méthode effectuant une requête de type POST permettant de retourner la City
+	 * à une Position donnée.
+	 * @param position Position de la ville à récupérer.
+	 * @throws JAXBException
+     */
 	public void searchForCity(Position position) throws JAXBException {
 		service = Service.create(qname);
 		service.addPort(qname, HTTPBinding.HTTP_BINDING, url);
@@ -150,6 +197,10 @@ public class MyClient {
 		printSource(result);
 	}
 
+	/**
+	 * Affiche le flux xml retourné.
+	 * @param s
+     */
 	public void printSource(Source s) {
 		try {
 			System.out.println("============================= Response Received =========================================");
@@ -162,6 +213,12 @@ public class MyClient {
 		}
 	}
 
+	/**
+	 * Méthode principale permettant de tester que les requêtes via le service
+	 * se passent correctement.
+	 * @param args
+	 * @throws Exception
+     */
 	public static void main(String args[]) throws Exception {
 
 		MyClient client = new MyClient();

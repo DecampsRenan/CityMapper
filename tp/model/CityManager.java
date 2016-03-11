@@ -62,7 +62,7 @@ public class CityManager {
 		throw new CityNotFound("City Not Found");
 	}
 
-	public List<City> searchNear(Position position) throws CityNotFound {
+	public List<City> searchNear(Position position, int radius) throws CityNotFound {
 
 		List<City> lCity = new LinkedList<>();
 
@@ -87,7 +87,7 @@ public class CityManager {
 			double d = earthPerimeter * c;
 			System.out.println("Distance : " + d);
 
-			if (d <= 10) {
+			if (d <= radius) {
 				lCity.add(city);
 			}
 
