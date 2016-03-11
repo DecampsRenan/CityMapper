@@ -26,7 +26,7 @@ public class MyClient {
 	private static final String url = "http://127.0.0.1:8084";
 
 	/**
-	 *  Constructeur chargé d'initialiser le parseur XML/Objet Java avec
+	 *  Constructeur charge d'initialiser le parseur XML/Objet Java avec
 	 * Les classes CityManager, City, Position
 	 */
 	public MyClient() {
@@ -39,8 +39,8 @@ public class MyClient {
 	}
 
 	/**
-	 * Méthode permettant de faire le lien avec le serveur et permettant d'exécuter
-	 * une requête de type GET retournant l'ensemble des City enregistrées.
+	 * Methode permettant de faire le lien avec le serveur et permettant d'executer
+	 * une requete de type GET retournant l'ensemble des City enregistrees.
 	 * @throws JAXBException
      */
     public void getCities() throws JAXBException {
@@ -63,9 +63,9 @@ public class MyClient {
     }
 
 	/**
-	 * Méthode permettant de faire le lien avec le serveur et permettant d'exécuter
-	 * une requête de type GET retournant l'ensemble des City enregistrées qui ont le nom spécifié.
-	 * @param name Nom de la ville à rechercher
+	 * Methode permettant de faire le lien avec le serveur et permettant d'executer
+	 * une requete de type GET retournant l'ensemble des City enregistrees qui ont le nom specifie.
+	 * @param name Nom de la ville a rechercher
 	 * @throws JAXBException
      */
     public void getCities(String name) throws JAXBException {
@@ -86,8 +86,8 @@ public class MyClient {
     }
 
 	/**
-	 * Méthode effectuant une requête de type DELETE permettant de supprimer l'ensemble
-	 * des City enregistrées.
+	 * Methode effectuant une requete de type DELETE permettant de supprimer l'ensemble
+	 * des City enregistrees.
 	 * @throws JAXBException
      */
     public void removeCities() throws JAXBException {
@@ -106,8 +106,8 @@ public class MyClient {
     }
 
 	/**
-	 * Méthode effectuant une requête de type PUT permettant d'ajouter une City.
-	 * @param city City à ajouter.
+	 * Methode effectuant une requete de type PUT permettant d'ajouter une City.
+	 * @param city City a ajouter.
 	 * @throws JAXBException
      */
     public void addCity(City city) throws JAXBException {
@@ -127,13 +127,13 @@ public class MyClient {
     }
 
 	/**
-	 * Méthode effectuant une requête de type DELETE permettant de supprimer la City spécifiée.
+	 * Methode effectuant une requete de type DELETE permettant de supprimer la City specifiee.
 	 *
-	 * WARNING: Cette méthode ne fonctionne pas; il semble que l'objet Source n'est jamais
-	 *          reçu du côté du serveur. Une des solutions serait de passer tous les paramètres
-	 *          nécessaires à la suppression dans l'URL et les récupérer du côté du serveur.
+	 * WARNING: Cette methode ne fonctionne pas; il semble que l'objet Source n'est jamais
+	 *          reçu du côte du serveur. Une des solutions serait de passer tous les parametres
+	 *          necessaires a la suppression dans l'URL et les recuperer du côte du serveur.
 	 *
-	 * @param city City à supprimer
+	 * @param city City a supprimer
 	 * @throws JAXBException
      */
     public void deleteCity(City city) throws JAXBException {
@@ -156,8 +156,8 @@ public class MyClient {
     }
 
 	/**
-	 * Méthode effectuant une requête de type POST permettant de retourner l'ensemble de
-	 * City autour d'une position donnée.
+	 * Methode effectuant une requete de type POST permettant de retourner l'ensemble de
+	 * City autour d'une position donnee.
 	 * @param position Position autour de laquelle chercher
 	 * @param radius rayon de recherche
 	 * @throws JAXBException
@@ -177,9 +177,9 @@ public class MyClient {
     }
 
 	/**
-	 * Méthode effectuant une requête de type POST permettant de retourner la City
-	 * à une Position donnée.
-	 * @param position Position de la ville à récupérer.
+	 * Methode effectuant une requete de type POST permettant de retourner la City
+	 * a une Position donnee.
+	 * @param position Position de la ville a recuperer.
 	 * @throws JAXBException
      */
 	public void searchForCity(Position position) throws JAXBException {
@@ -198,7 +198,7 @@ public class MyClient {
 	}
 
 	/**
-	 * Affiche le flux xml retourné.
+	 * Affiche le flux xml retourne.
 	 * @param s
      */
 	public void printSource(Source s) {
@@ -214,7 +214,7 @@ public class MyClient {
 	}
 
 	/**
-	 * Méthode principale permettant de tester que les requêtes via le service
+	 * Methode principale permettant de tester que les requetes via le service
 	 * se passent correctement.
 	 * @param args
 	 * @throws Exception

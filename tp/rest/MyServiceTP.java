@@ -21,7 +21,7 @@ import java.util.List;
 public class MyServiceTP implements Provider<Source> {
 	
 	/**
-	 * Gère les villes
+	 * Gere les villes
 	 */
 	private CityManager cityManager = new CityManager();
 	
@@ -31,7 +31,7 @@ public class MyServiceTP implements Provider<Source> {
 	protected WebServiceContext wsContext;
 
 	/**
-	 * Constructeur chargé d'initialiser le parseur XML/Objet Java avec
+	 * Constructeur charge d'initialiser le parseur XML/Objet Java avec
 	 * Les classes CityManager, City, Position
 	 */
 	public MyServiceTP(){
@@ -47,10 +47,10 @@ public class MyServiceTP implements Provider<Source> {
 	}
 
 	/**
-	 * Méthode appellée à chaque requête; dispatche en fonction
-	 * de la méthode utilisée vers le traitement associé.
+	 * Methode appellee a chaque requete; dispatche en fonction
+	 * de la methode utilisee vers le traitement associe.
 	 * @param source
-	 * @return Réponse du serveur.
+	 * @return Reponse du serveur.
      */
     public Source invoke(Source source) {
 
@@ -75,11 +75,11 @@ public class MyServiceTP implements Provider<Source> {
     }
 
 	/**
-	 * Méthode chargée d'ajouter la ville passée en paramètre à la liste
-	 * de villes déjà connues.
+	 * Methode chargee d'ajouter la ville passee en parametre a la liste
+	 * de villes deja connues.
 	 * @param source
-	 * @param mc Contenu de la requête (correspond aux variables -> ici une City)
-	 * @return Source réponse du serveur
+	 * @param mc Contenu de la requete (correspond aux variables; ici une City)
+	 * @return Source reponse du serveur
 	 * @throws JAXBException
      */
 	private Source put(Source source, MessageContext mc) throws JAXBException {
@@ -93,12 +93,12 @@ public class MyServiceTP implements Provider<Source> {
 	}
 
 	/**
-	 * Méthode chargée de supprimer toutes les villes (all) ou seulement
-	 * celle qui a été spéciifiée.
+	 * Methode chargee de supprimer toutes les villes (all) ou seulement
+	 * celle qui a ete speciifiee.
 	 * @param source
-	 * @param mc Contenu de la requête (correspond aux variables -> ici une City)
-	 * @param path Chemin utilisé pour la requête
-	 * @return Source réponse du serveur
+	 * @param mc Contenu de la requete (correspond aux variables; ici une City)
+	 * @param path Chemin utilise pour la requete
+	 * @return Source reponse du serveur
 	 * @throws JAXBException
      */
 	private Source delete(Source source, MessageContext mc, String path) throws JAXBException {
@@ -112,7 +112,7 @@ public class MyServiceTP implements Provider<Source> {
 
         } else {
 
-            // * effacer la ville passée en paramètre
+            // * effacer la ville passee en parametre
             Unmarshaller u = jc.createUnmarshaller();
             City city = (City) u.unmarshal(source);
             cityManager.removeCity(city);
@@ -122,12 +122,12 @@ public class MyServiceTP implements Provider<Source> {
 	}
 
 	/**
-	 * Méthode chargée de retourner la/les villes situées sur/proche d'une Position.
+	 * Methode chargee de retourner la/les villes situees sur/proche d'une Position.
 	 * @param source
-	 * @param mc Contenu de la requête (correspond aux variables -> ici une City)
-	 * @param path Chemin utilisé pour la requête
-	 * @return La ou les City trouvées.
-	 * @throws JAXBException si aucune ville n'esst retournée.
+	 * @param mc Contenu de la requete (correspond aux variables; ici une City)
+	 * @param path Chemin utilise pour la requete
+	 * @return La ou les City trouvees.
+	 * @throws JAXBException si aucune ville n'esst retournee.
      */
 	private Source post(Source source, MessageContext mc, String path) throws JAXBException {
 
@@ -156,19 +156,19 @@ public class MyServiceTP implements Provider<Source> {
 	}
 
 	/**
-	 * Méthode chargée de retourner toutes les City ou seulement celles dont
-	 * le nom a été passé en paramètre.
+	 * Methode chargee de retourner toutes les City ou seulement celles dont
+	 * le nom a ete passe en parametre.
 	 * @param mc
-	 * @param path Chemin utilisé pour la requête
-	 * @return La/les villes trouvées
-	 * @throws JAXBException si aucune City n'est retournée.
+	 * @param path Chemin utilise pour la requete
+	 * @return La/les villes trouvees
+	 * @throws JAXBException si aucune City n'est retournee.
      */
 	private Source get(MessageContext mc, String path) throws JAXBException {
 
         Object message;
 
 		if (path.equals("all")) {
-		    // * retourner tous les villes seulement si le chemin d'accès est "all"
+		    // * retourner tous les villes seulement si le chemin d'acces est "all"
             message = cityManager;
         } else {
             CityManager cities = new CityManager();
@@ -187,6 +187,6 @@ public class MyServiceTP implements Provider<Source> {
 	      Endpoint e = Endpoint.create( HTTPBinding.HTTP_BINDING,
 	                                     new MyServiceTP());
 	      e.publish("http://127.0.0.1:8084/");
-	       // pour arrêter : e.stop();
+	       // pour arreter : e.stop();
 	 }
 }
